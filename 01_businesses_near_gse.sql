@@ -1,7 +1,8 @@
 /*
   What are the 5 closest business to the Graduate School of Education building
   (3700 Walnut St) that aren't owned by the Trustees of UPenn? Try using
-  https://geojson.io/ to get the coordinates of GSE.
+  https://geojson.io/ to get the coordinates of GSE.  -75.19725322723389,
+          39.95323035772829
 
   Hint: There are two ways to get the distance from one geometry to another in
   PostgresSQL:
@@ -11,4 +12,9 @@
   The latter should be used if getting distances for ORDER BY.
 */
 
-select ...
+
+
+select * from business_licenses
+where opa_owner not like 'TRUSTEES OF %'
+order by the_geom <-> st_setsrid(st_makepoint(-75.1972, 39.9533),4326)
+limit 5
